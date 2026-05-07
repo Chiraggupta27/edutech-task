@@ -1,5 +1,7 @@
-const dns = require("dns");
-dns.setServers(["1.1.1.1", "8.8.8.8"]);
+// const dns = require("dns");
+// dns.setServers(["1.1.1.1", "8.8.8.8"]);
+// it is only for local development if you are using a VPN or proxy server, you can uncomment this code
+
 const express = require("express");
 const cors = require("cors");
 
@@ -13,7 +15,8 @@ const allowedOrigins = [
   "http://localhost:5173",
   "http://127.0.0.1:5173",
   "http://localhost:5174",
-  "http://127.0.0.1:5174"
+  "http://127.0.0.1:5174",
+  "https://edutech-task-eight.vercel.app"
 ];
 
 app.use(
