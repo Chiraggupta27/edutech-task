@@ -1,0 +1,20 @@
+.nav{
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  backdrop-filter: blur(10px);
+  background: rgba(11, 18, 32, .7);
+  border-bottom: 1px solid var(--line);
+}
+.navInner{
+  padding: 16px 0;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+}
+.brand{ display:flex; align-items:center; gap:12px; min-width:0; }
+.brandTitle{ font-weight: 800; letter-spacing: .2px; }
+.brandSub{ font-size: 13px; margin-top: 2px; white-space: nowrap; overflow:hidden; text-overflow: ellipsis; }
+.navBtn{ padding:10px 12px; }
+

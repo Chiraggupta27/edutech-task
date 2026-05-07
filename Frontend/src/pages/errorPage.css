@@ -1,0 +1,36 @@
+.errWrap{
+  min-height: calc(100vh - 84px);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding: 24px 0;
+}
+.errCard{
+  width: min(640px, 92vw);
+  padding: 18px;
+}
+.errTitle{
+  font-weight: 950;
+  font-size: 24px;
+  letter-spacing: .2px;
+}
+.errMsg{
+  margin-top: 10px;
+  line-height: 1.55;
+  font-size: 14px;
+}
+.errMeta{
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+  font-size: 13px;
+}
+.errKey{ color: rgba(241,245,255,.7); font-weight: 800; }
+.errVal{ color: rgba(241,245,255,.88); }
+.errActions{
+  display:flex;
+  justify-content:flex-end;
+  gap: 10px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+}

@@ -1,0 +1,26 @@
+.taskForm{
+  padding: 16px;
+  border-radius: 18px;
+  background: rgba(12, 17, 31, .82);
+}
+.taskFormHead{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom: 12px;
+}
+.taskFormTitle{ font-weight: 850; font-size: 18px; }
+.taskFormSub{ font-size: 13px; margin-top: 4px; }
+.taskFormBody{ padding-top: 6px; }
+.taskFormActions{
+  display:flex;
+  justify-content:flex-end;
+  margin-top: 12px;
+}
+
+.taskForm .input{
+  background: rgba(255,255,255,.04);
+}
+.sp12{ height: 12px; }
+

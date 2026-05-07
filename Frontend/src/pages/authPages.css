@@ -1,0 +1,55 @@
+.authWrap{
+  min-height: 100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding: 24px 16px;
+}
+.authCard{
+  width: min(460px, 92vw);
+  padding: 18px;
+}
+.authTitle{ font-weight: 900; font-size: 22px; }
+.authSub{ margin-top: 6px; font-size: 13px; }
+.authForm{ margin-top: 14px; display:flex; flex-direction:column; gap:12px; }
+.authActions{ display:flex; justify-content:flex-end; gap:10px; align-items:center; margin-top: 4px; }
+.authSmall{ font-size: 13px; }
+.authLink{ color: rgba(106,167,255,.95); font-weight: 750; }
+.authRow{ display:grid; grid-template-columns: 1fr; gap: 10px; }
+@media (min-width: 520px){
+  .authRow{ grid-template-columns: 1fr 1fr; }
+}
+
+.passwordWrap{
+  position: relative;
+}
+.passwordWrap .input{
+  padding-right: 44px;
+  /* padding-block: px; */
+}
+.eyeBtn{
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 34px;
+  height: 34px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,.10);
+  background: rgba(255,255,255,.04);
+  cursor: pointer;
+  color: rgba(241,245,255,.9);
+  font-weight: 800;
+  font-size: 0;
+}
+.eyeBtn:hover{ background: rgba(255,255,255,.07); }
+.eyeIcon{
+  width: 18px;
+  height: 18px;
+  display:block;
+  opacity: .9;
+}
+
