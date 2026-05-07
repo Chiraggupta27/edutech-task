@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
@@ -13,6 +13,7 @@ export default function Register() {
   const { token, isLoading } = useSelector((s) => s.auth);
   const [showPassword, setShowPassword] = useState(false);
   const [passwordReadOnly, setPasswordReadOnly] = useState(true);
+  const submitIntentRef = useRef(false);
 
   const {
     register,
@@ -33,7 +34,8 @@ export default function Register() {
     if (token) navigate("/dashboard", { replace: true });
   }, [token]);
 
-  const onSubmit = async (values) => {
+  const onValidatedSubmit = async (values) => {
+    if (!submitIntentRef.current) return;
     const ok = await trigger();
     if (!ok) return;
     dispatch(registerUser(values));
@@ -75,7 +77,13 @@ export default function Register() {
         <form
           className="authForm"
           autoComplete="off"
-          onSubmit={handleSubmit(onSubmit)}
+          onKeyDownCapture={() => {
+            submitIntentRef.current = true;
+          }}
+          onPointerDownCapture={() => {
+            submitIntentRef.current = true;
+          }}
+          onSubmit={handleSubmit(onValidatedSubmit)}
         >
           <div>
             <label className="label">Name</label>

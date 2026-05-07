@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import "./taskForm.css";
 
@@ -9,6 +9,8 @@ export default function TaskForm({
   onCancel,
   loading = false
 }) {
+  const submitIntentRef = useRef(false);
+
   const {
     register,
     handleSubmit,
@@ -32,12 +34,22 @@ export default function TaskForm({
     }
   }, [mode, initialValues, reset]);
 
-  const submit = (values) => {
+  const onValidatedSubmit = (values) => {
+    if (!submitIntentRef.current) return;
     onSubmit(values, () => reset({ title: "", description: "" }));
   };
 
   return (
-    <form className="taskForm card" onSubmit={handleSubmit(submit)}>
+    <form
+      className="taskForm card"
+      onKeyDownCapture={() => {
+        submitIntentRef.current = true;
+      }}
+      onPointerDownCapture={() => {
+        submitIntentRef.current = true;
+      }}
+      onSubmit={handleSubmit(onValidatedSubmit)}
+    >
       <div className="taskFormHead">
         <div>
           <div className="taskFormTitle">

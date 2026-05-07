@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -14,6 +14,7 @@ export default function Login() {
   const { token, isLoading } = useSelector((s) => s.auth);
   const [showPassword, setShowPassword] = useState(false);
   const [passwordReadOnly, setPasswordReadOnly] = useState(true);
+  const submitIntentRef = useRef(false);
 
   const from = location.state?.from || "/dashboard";
 
@@ -35,7 +36,8 @@ export default function Login() {
     if (token) navigate(from, { replace: true });
   }, [token]);
 
-  const onSubmit = (values) => {
+  const onValidatedSubmit = (values) => {
+    if (!submitIntentRef.current) return;
     dispatch(loginUser(values));
   };
 
@@ -77,7 +79,13 @@ export default function Login() {
         <form
           className="authForm"
           autoComplete="off"
-          onSubmit={handleSubmit(onSubmit)}
+          onKeyDownCapture={() => {
+            submitIntentRef.current = true;
+          }}
+          onPointerDownCapture={() => {
+            submitIntentRef.current = true;
+          }}
+          onSubmit={handleSubmit(onValidatedSubmit)}
         >
           <div>
             <label className="label">Email</label>
