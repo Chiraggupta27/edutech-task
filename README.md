@@ -19,6 +19,58 @@ Full‑stack Task Management Dashboard with authentication and task CRUD.
 - express-validator
 - dotenv + cors
 
+### Application URL
+
+- Frontend Production Url: `https://edutech-task-eight.vercel.app/`  
+
+## Deployment (Render + Vercel)
+
+### Backend → [Render](https://render.com) (Web Service)
+
+1. **New → Web Service** → connect GitHub repo.  
+2. **Root Directory:** `Backend` (monorepo).  
+3. **Build Command:** `npm install` · **Start Command:** `npm start`  
+4. **Environment variables** on Render:
+
+   | Name | Notes |
+   |------|--------|
+   | `MONGO_URI` | MongoDB Atlas connection string |
+   | `JWT_SECRET` | Strong secret (different from `.env.example`) |
+
+   **Do not set `PORT` manually** — Render injects `process.env.PORT` (already used in `Backend/server.js`).
+
+5. **MongoDB Atlas → Network Access:** allow **`0.0.0.0/0`** (or Render static outbound IPs if you use that plan) so the cloud API can reach the cluster.
+
+6. **Health check (optional):** `GET https://YOUR-SERVICE.onrender.com/api/health`
+
+7. **CORS:** In `Backend/app.js`, add your **frontend origin** inside `allowedOrigins` (e.g. `https://your-app.vercel.app`). Localhost entries can stay for dev.
+
+---
+
+### Frontend → [Vercel](https://vercel.com)
+
+1. **Import project** → same repo · **Framework Preset:** **Vite**  
+2. **Root Directory:** `Frontend` · **Install:** `npm install` · **Build:** `vite build` (default) · **Output:** `dist`
+
+3. **Environment variables** (`Settings → Environment Variables`):
+
+   - **Name:** `VITE_API_BASE_URL`  
+   - **Value:** `https://YOUR-SERVICE.onrender.com/api` (your Render API URL, **must** include **`https://`** and end with **`/api`**)  
+   - Apply to **Production** and **Preview** as needed, then **Redeploy.**  
+     Vite bakes env at **build time** — changing the variable alone does not affect an old deployment until you redeploy.
+
+4. **`Frontend/vercel.json`** SPA fallback reloads **`/login`**, **`/dashboard`**, etc. without a server 404. Keep it committed at the Frontend root next to `package.json`.
+
+5. **`Backend` CORS:** must match the exact **`https://...vercel.app`** origin (scheme + host, usually no trailing slash).
+
+---
+
+### Quick deploy checklist
+
+- [ ] Render service shows **Running** · `/api/health` returns `{ "success": true, ... }`   
+- [ ] Vercel `VITE_API_BASE_URL` = Render base **`…/api`** · **Redeploy** after edits  
+- [ ] Backend `allowedOrigins` includes the live Vercel URL  
+
 ## Folder Structure
 
 ```
@@ -45,6 +97,7 @@ Frontend/
     App.jsx
     main.jsx
   package.json
+  vercel.json          # SPA rewrites (/login reload → index.html)
   vite.config.js
 ```
 
@@ -61,7 +114,7 @@ Create/update `Backend/.env`:
 
 ```bash
 PORT=5000
-MONGO_URI=mongodb://127.0.0.1:27017/task_dashboard
+MONGO_URI=mongo_db_uri
 JWT_SECRET=change_me_in_production
 ```
 
@@ -81,20 +134,20 @@ cd Frontend
 npm install
 ```
 
-Create/update `Frontend/.env`:
+Create/update `Frontend/.env` (copy from `Frontend/.env.example`):
 
 ```bash
-VITE_API_BASE_URL=http://localhost:5000/api
+# Full backend base URL — must NOT be your Vercel URL
+VITE_API_BASE_URL=https://your-service.onrender.com/api
 ```
+
+Locally this points at your machine or Render URL; **on Vercel** set the **same variable name** with your **Render `/api`** URL and redeploy.
 
 Run frontend:
 
 ```bash
 npm run dev
 ```
-
-Open:
-- `http://localhost:5173`
 
 ## Troubleshooting: MongoDB Atlas DNS (ECONNREFUSED querySrv)
 
@@ -162,6 +215,7 @@ All APIs return:
 ```
 
 ## Notes
+- SPA hosting: reloading routes like **`/login`** needs **`vercel.json`** rewrites; otherwise static hosts return **404**.
 - Tasks are user‑scoped (each user only sees their own tasks).
 - Frontend stores JWT in `localStorage` and uses Axios interceptors to attach it to requests.
 - UI includes filters, debounced search, pagination, skeleton loading, and delete confirmation.
